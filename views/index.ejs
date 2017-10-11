@@ -5,7 +5,8 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <%- include partials/header.ejs %>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <p><%= user ? user.username + ", bienvenu sur " + title : "Bienvenu sur " + title %> </p>
   </body>
 </html>

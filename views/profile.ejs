@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profil</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <%- include partials/header.ejs %>
+    <div id="infos"></div>
+    </br> Vos réservations : </br></br>
+    <div id="reservations"></div>
+
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        $.ajax({
+          "url" : "/user/json",
+          "headers" : {"Authorization": "bearer " + window.localStorage.token}
+        })
+        .done(function( data ) {
+          if(data.reservations.length <= 0){
+            $("#reservations").append("<span>Vous n'avez effectué aucune réservations.</span>")
+          } else {
+            var html = "<span><b> Ville </b></span>" +
+              "<span> <b>&nbsp&nbsp&nbsp&nbspDescription </b></span>" +
+              "</br>"
+            $("#reservations").append(html)
+            for (reservation of data.reservations) {
+              var html = "<span>" + reservation.trip.name + "</span>" +
+                "<span>&nbsp&nbsp&nbsp&nbsp"+ reservation.trip.description + "</span>" +
+                "</br>"
+              $("#reservations").append(html)
+            }
+            $( ".reservation_button" ).bind( "click", reservation)
+          }
+          console.log( data );
+
+        })
+        .fail(function(err) {
+          console.log(err);
+        });
+      })
+
+    </script>
+  </body>
+</html>

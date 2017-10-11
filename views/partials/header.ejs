@@ -1,0 +1,21 @@
+<div id="header">
+  <a href="/">Accueil</a></br>
+  <a href="/user" id="profile_button" hidden="true">Profil</a></br>
+  <a href="/trips">Offres</a></br>
+  <span>Recherche</span></br>
+  <input type="text" id="searchValue" value="">
+  <button type="button" id="searchButton">Rechercher</button>
+  <div id="login_form">
+    <form action="/sessions" method="post">
+      <span>Nom d'utilisateur</span>
+      <input type="text" id="username" value=""></br>
+      <span>Mot de passe</span>
+      <input type="password" id="password" value=""></br>
+      <button type="button" id="login_button">Connection</button>
+    </form>
+  </div>
+  <span id="err"></span></br>
+</div>
+
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/header.js"></script>

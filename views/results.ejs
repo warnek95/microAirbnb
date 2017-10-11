@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Offres</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <%- include partials/header.ejs %>
+    </br> Résultats de la recherche : </br></br>
+    <div id="offers"></div>
+
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        var query = qs("q")
+        console.log("/trips/json" + (query ? "?q=" + query : ""));
+        $.ajax({
+          "url" : "/trips/json" + (query ? "?q=" + query : ""),
+          "headers" : {"Authorization": "bearer " + window.localStorage.token}
+        })
+        .done(function( data ) {
+          if(data.trips.length <= 0){
+            $("#offers").append("<span>Il n'y a pas d'offres disponibles pour cette recherche.</span>")
+          } else {
+            var html = "<span><b> Ville </b></span>" +
+              "<span> <b>&nbsp&nbsp&nbsp&nbspDescription </b></span>" +
+              "</br>"
+            $("#offers").append(html)
+            for (trip of data.trips) {
+              var html = "<span>" + trip.name + "</span>" +
+                "<span>&nbsp&nbsp&nbsp&nbsp"+ trip.description + "</span>" +
+                (data.user != null && !trip.reserved ? "&nbsp&nbsp&nbsp&nbsp<button class='reservation_button' attr-id='" + trip.id + "'>Réserver</button>" : "&nbsp&nbsp&nbsp&nbsp<button disabled>Déjà réservé</button>") +
+                "</br>"
+              $("#offers").append(html)
+            }
+            $( ".reservation_button" ).bind( "click", reservation)
+          }
+          console.log( data );
+
+        })
+        .fail(function(err) {
+          console.log(err);
+        });
+      })
+
+      function qs(key) {
+        key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
+        var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
+        return match && decodeURIComponent(match[1].replace(/\+/g, " "));
+      }
+
+      function reservation(event){
+        $.ajax({
+          url: '/trips',
+          type: 'post',
+          data: {
+              trip_id: $(this).attr('attr-id')
+          },
+          "headers" : {
+            "Authorization": "bearer " + window.localStorage.token
+          },
+          dataType: 'json',
+          success: function (data) {
+              console.info(data);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

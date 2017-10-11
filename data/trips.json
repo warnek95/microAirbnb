@@ -1,0 +1,22 @@
+[
+  {
+    "id" : "1",
+    "name" : "Barcelona",
+    "description" : "Viva la vida"
+  },
+  {
+    "id" : "2",
+    "name" : "France",
+    "description" : "Vive la baguette"
+  },
+  {
+    "id" : "3",
+    "name" : "Italia",
+    "description" : "Todo bene"
+  },
+  {
+    "id" : "4",
+    "name" : "England",
+    "description" : "Want some tea?"
+  }
+]
