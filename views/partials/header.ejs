@@ -2,15 +2,18 @@
   <a href="/">Accueil</a></br>
   <a href="/user" id="profile_button" hidden="true">Profil</a></br>
   <a href="/trips">Offres</a></br>
+  <span>Envoyer un mail</span></br>
+  <input type="text" placeholder="Votre mail" id="mailValue" value="">
+  <button id="mailButton">Envoyer</button></br></br>
   <span>Recherche</span></br>
-  <input type="text" id="searchValue" value="">
+  <input type="text" id="searchValue" placeholder="Votre recherche" value="">
   <button id="searchButton">Rechercher</button></br></br>
   <div id="login_form">
     <form action="/sessions" method="post">
       <span>Nom d'utilisateur</span>
-      <input type="text" id="username" value=""></br>
+      <input type="text" id="username" placeholder="Votre username" value=""></br>
       <span>Mot de passe</span>
-      <input type="password" id="password" value=""></br>
+      <input type="password" placeholder="Votre password" id="password" value=""></br>
       <button type="button" id="login_button">Connection</button>
     </form>
   </div>
@@ -22,3 +25,5 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/tchat.js"></script>
+
+<script src="/jquery-ui/jquery-ui.min.js"></script>

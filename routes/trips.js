@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var fs = require('fs');
+var moment = require('moment');
 var tripsFilePath = __dirname + "/../data/trips.json"
 var reservationsFilePath = __dirname + "/../data/reservations.json"
 module.exports = function(app, passport) {
@@ -34,14 +35,26 @@ module.exports = function(app, passport) {
 
   app.post('/trips', function (req, res) {
     fs.readFile(reservationsFilePath,function (err, reservations) {
+      var start = moment(parseInt(req.body.start))
+      var end = moment(parseInt(req.body.end))
       var reservationsParsed = JSON.parse(reservations);
-      var index = _.findIndex(reservationsParsed, function(o) {
-        return o.trip_id == req.body.trip_id && o.user_id == req.user.id
+      var indexOwn = _.findIndex(reservationsParsed, function(o) {
+        return (o.trip_id == req.body.trip_id && o.user_id == req.user.id)
       })
-      if(index < 0) {
+      var indexOthers = _.findIndex(reservationsParsed, function(o) {
+        var savedStart = moment(o.start)
+        var savedEnd = moment(o.end)
+        return (start.isSameOrBefore(savedStart) && end.isSameOrAfter(savedStart)) ||
+          (start.isSameOrBefore(savedEnd) && end.isSameOrAfter(savedEnd)) ||
+          (start.isSameOrAfter(savedStart) && end.isSameOrBefore(savedEnd))
+      })
+      console.log(indexOthers);
+      if(indexOwn < 0 && indexOthers < 0) {
         reservationsParsed.push({
           trip_id : req.body.trip_id,
-          user_id : req.user.id
+          user_id : req.user.id,
+          start : start,
+          end : end
         })
         fs.writeFile(reservationsFilePath, JSON.stringify(reservationsParsed), 'utf8', function(err, data){
           res.json({
@@ -49,10 +62,15 @@ module.exports = function(app, passport) {
             "message": "Reservation effectué."
           });
         });
-      } else {
-        res.json({
-          "status" : "OK",
-          "message": "Reservation déjà effectué."
+      } else if(indexOwn >= 0) {
+        res.status(400).json({
+          "status" : "Bad request",
+          "message": "Vous avez déjà fais une réservation pour cette destination."
+        });
+      } else if(indexOthers >= 0) {
+        res.status(400).json({
+          "status" : "Bad request",
+          "message": "Une réservation a déjà été effectuée pour cette destination à cette période."
         });
       }
     });

@@ -3,17 +3,23 @@
   <head>
     <title>Offres</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/jquery-ui/jquery-ui.css' />
   </head>
   <body>
     <%- include partials/header.ejs %>
     </br> Résultats de la recherche : </br></br>
-    <div id="offers"></div>
+    <p>Choisissez une date de début: <input type="text" id="datepicker_start"></p></br>
+    <p>Choisissez une date de fin: <input type="text" id="datepicker_end"></p></br>
+    <p>Choisissez une destination: </p>
+    <div id="offers"></div></br>
+    <div id="res_err"><span hidden="true"></span></div>
     <%- include partials/tchat.ejs %>
 
     <script type="text/javascript">
       $( document ).ready(function() {
+        $( "#datepicker_start" ).datepicker({ minDate: 0 });
+        $( "#datepicker_end" ).datepicker({ minDate: 0 });
         var query = qs("q")
-        console.log("/trips/json" + (query ? "?q=" + query : ""));
         $.ajax({
           "url" : "/trips/json" + (query ? "?q=" + query : ""),
           "headers" : {"Authorization": "bearer " + window.localStorage.token}
@@ -37,7 +43,6 @@
             }
             $( ".reservation_button" ).bind( "click", reservation)
           }
-          console.log( data );
 
         })
         .fail(function(err) {
@@ -52,20 +57,33 @@
       }
 
       function reservation(event){
-        $.ajax({
-          url: '/trips',
-          type: 'post',
-          data: {
-              trip_id: $(this).attr('attr-id')
-          },
-          "headers" : {
-            "Authorization": "bearer " + window.localStorage.token
-          },
-          dataType: 'json',
-          success: function (data) {
-              console.info(data);
-          }
-        });
+        var start = $( "#datepicker_start" ).datepicker( "getDate" );
+        var end = $( "#datepicker_end" ).datepicker( "getDate" );
+        if(start && end) {
+          $.ajax({
+            url: '/trips',
+            type: 'post',
+            data: {
+                trip_id: $(this).attr('attr-id'),
+                start: start.valueOf(),
+                end: end.valueOf()
+            },
+            "headers" : {
+              "Authorization": "bearer " + window.localStorage.token
+            },
+            dataType: 'json'
+          })
+          .done(function(data) {
+            window.location.href = "/user";
+          })
+          .fail(function(data, err) {
+            $("#res_err").text(data.responseJSON.message)
+            $("#res_err").show()
+          });
+        } else {
+          $("#res_err").text("Veuillez remplir les deux dates.")
+          $("#res_err").show()
+        }
       }
     </script>
   </body>

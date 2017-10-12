@@ -3,6 +3,7 @@
   <head>
     <title>Profil</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/jquery-ui/jquery-ui.css' />
   </head>
   <body>
     <%- include partials/header.ejs %>
@@ -24,11 +25,14 @@
           } else {
             var html = "<span><b> Ville </b></span>" +
               "<span> <b>&nbsp&nbsp&nbsp&nbspDescription </b></span>" +
+              "<span> <b>&nbspDates </b></span>" +
               "</br>"
             $("#reservations").append(html)
             for (reservation of data.reservations) {
               var html = "<span>" + reservation.trip.name + "</span>" +
                 "<span>&nbsp&nbsp&nbsp&nbsp"+ reservation.trip.description + "</span>" +
+                "<span>&nbsp du "+ reservation.start + "</span>" +
+                "<span> au "+ reservation.end + "</span>" +
                 "</br>"
               $("#reservations").append(html)
             }
