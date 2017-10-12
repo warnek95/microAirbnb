@@ -9,6 +9,7 @@
     <div id="infos"></div>
     </br> Vos réservations : </br></br>
     <div id="reservations"></div>
+    <%- include partials/tchat.ejs %>
 
     <script type="text/javascript">
       $( document ).ready(function() {
@@ -17,6 +18,7 @@
           "headers" : {"Authorization": "bearer " + window.localStorage.token}
         })
         .done(function( data ) {
+          $("#infos").append("<span>Bonjour " + data.user.username + "</span>")
           if(data.reservations.length <= 0){
             $("#reservations").append("<span>Vous n'avez effectué aucune réservations.</span>")
           } else {

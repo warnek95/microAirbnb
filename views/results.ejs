@@ -8,6 +8,7 @@
     <%- include partials/header.ejs %>
     </br> Résultats de la recherche : </br></br>
     <div id="offers"></div>
+    <%- include partials/tchat.ejs %>
 
     <script type="text/javascript">
       $( document ).ready(function() {
@@ -28,7 +29,9 @@
             for (trip of data.trips) {
               var html = "<span>" + trip.name + "</span>" +
                 "<span>&nbsp&nbsp&nbsp&nbsp"+ trip.description + "</span>" +
-                (data.user != null && !trip.reserved ? "&nbsp&nbsp&nbsp&nbsp<button class='reservation_button' attr-id='" + trip.id + "'>Réserver</button>" : "&nbsp&nbsp&nbsp&nbsp<button disabled>Déjà réservé</button>") +
+                (data.user != null && !trip.reserved ?
+                  "&nbsp&nbsp&nbsp&nbsp<button class='reservation_button' attr-id='" + trip.id + "'>Réserver</button>" :
+                  "&nbsp&nbsp&nbsp&nbsp<button disabled>Déjà réservé</button>") +
                 "</br>"
               $("#offers").append(html)
             }

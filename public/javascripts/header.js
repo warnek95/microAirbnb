@@ -11,6 +11,7 @@ $( document ).ready(function() {
     .done(function( data ) {
       console.log( "Data Loaded: " + data );
       window.localStorage.setItem('token', data.token);
+      window.localStorage.setItem('username', $('#username').val());
       window.location.href = "/trips";
     })
     .fail(function(err) {
