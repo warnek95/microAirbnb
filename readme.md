@@ -1,3 +1,6 @@
+Lancer npm start
+Puis aller à http://localhost:3000
+
 Identifiants pour vous connecter :
 
 username        mot de passe
