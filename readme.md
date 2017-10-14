@@ -1,5 +1,4 @@
-Lancer npm start
-Puis aller à http://localhost:3000
+Lancer npm start puis aller à http://localhost:3000
 
 Identifiants pour vous connecter :
 
