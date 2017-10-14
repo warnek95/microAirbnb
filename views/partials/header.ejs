@@ -1,13 +1,18 @@
 <div id="header">
-  <a href="/">Accueil</a></br>
-  <a href="/user" id="profile_button" hidden="true">Profil</a></br>
-  <a href="/trips">Offres</a></br>
+  <ul>
+    <li><a href="/">Accueil</a></li>
+    <li><a href="/user" id="profile_button" hidden="true">Profil</a></li>
+    <li><a href="/user/edit" id="edit_profile_button" hidden="true">Modifier le profil</a></li>
+    <li><a href="/trips">Offres</a></li>
+    <li><a id="disconnect" href="#" hidden="true">Deconnexion</a></li>
+    <li>
+    <span>&nbsp&nbsp&nbsp&nbsp</span>
+    <input type="text" id="searchValue" placeholder="Votre recherche" value="">
+    <button id="searchButton">Rechercher</button></li>
+  </ul>
   <span>Envoyer un mail</span></br>
   <input type="text" placeholder="Votre mail" id="mailValue" value="">
   <button id="mailButton">Envoyer</button></br></br>
-  <span>Recherche</span></br>
-  <input type="text" id="searchValue" placeholder="Votre recherche" value="">
-  <button id="searchButton">Rechercher</button></br></br>
   <div id="login_form">
     <form action="/sessions" method="post">
       <span>Nom d'utilisateur</span>
@@ -18,6 +23,7 @@
     </form>
   </div>
   <span id="err"></span></br>
+  <span id="askToConnect">Connectez vous pour voir votre profil et réserver.</span></br>
 </div>
 
 <script src="/javascripts/jquery.min.js"></script>

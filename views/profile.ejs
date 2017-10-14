@@ -7,19 +7,25 @@
   </head>
   <body>
     <%- include partials/header.ejs %>
-    <div id="infos"></div>
-    </br> Vos réservations : </br></br>
-    <div id="reservations"></div>
+    <div id="profile">
+      <div id="infos"></div>
+      </br> Vos réservations : </br></br>
+      <div id="reservations"></div>
+    </div>
     <%- include partials/tchat.ejs %>
 
     <script type="text/javascript">
       $( document ).ready(function() {
+        if(!window.localStorage.token){
+          $('#profile').hide()
+        }
         $.ajax({
           "url" : "/user/json",
           "headers" : {"Authorization": "bearer " + window.localStorage.token}
         })
         .done(function( data ) {
-          $("#infos").append("<span>Bonjour " + data.user.username + "</span>")
+          $("#infos").append("<span>Bonjour " + data.user.username +
+          (data.user.destination ? ", votre destination préférée est " + data.user.destination : "") + "</span>")
           if(data.reservations.length <= 0){
             $("#reservations").append("<span>Vous n'avez effectué aucune réservations.</span>")
           } else {

@@ -8,7 +8,7 @@ module.exports = function(app, passport) {
     res.render('results');
   });
 
-  app.get('/trips/json', function (req, res) {
+  app.get('/trips/json',function (req, res) {
 
     fs.readFile(tripsFilePath,function (err, trips) {
       fs.readFile(reservationsFilePath,function (err, reservations) {

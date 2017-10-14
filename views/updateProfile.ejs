@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edition de profil</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/jquery-ui/jquery-ui.css' />
+  </head>
+  <body>
+    <%- include partials/header.ejs %>
+    <div id="updateProfile">
+      <form>
+        <span>Nom d'utilisateur</span>
+        <input type="text" id="username_update" placeholder="Votre username" value=""></br>
+        <span>Destination préférée</span>
+        <input type="text" id="destination" placeholder="Votre destination préférée" value=""></br>
+        <button type="button" id="update_button">Mettre à jour</button>
+      </form>
+    </div>
+    <%- include partials/tchat.ejs %>
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        if(!window.localStorage.token){
+          $('#updateProfile').hide()
+        }
+        $.ajax({
+          "url" : "/user/edit/json",
+          "headers" : {"Authorization": "bearer " + window.localStorage.token}
+        })
+        .done(function( data ) {
+
+           $('#username_update').val(data.user.username)
+           $('#destination').val(data.user.destination)
+        })
+
+        $( "#update_button" ).bind( "click", function( event ) {
+          $.ajax({
+            url: '/user',
+            type: 'put',
+            data: {
+              username : $('#username_update').val(),
+              destination : $('#destination').val()
+            },
+            "headers" : {
+              "Authorization": "bearer " + window.localStorage.token
+            },
+            dataType: 'json'
+          })
+          .done(function(data) {
+            window.location.href = "/user";
+          })
+          .fail(function(data, err) {
+            console.log(data);
+          });
+        });
+      })
+    </script>
+  </body>
+</html>

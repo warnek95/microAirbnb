@@ -1,7 +1,10 @@
 $( document ).ready(function() {
   if(window.localStorage.token){
     $('#login_form').hide()
+    $('#askToConnect').hide()
+    $('#edit_profile_button').show()
     $('#profile_button').show()
+    $('#disconnect').show()
   }
   $( "#login_button" ).bind( "click", function( event ) {
     $.post( "/sessions", {
@@ -29,5 +32,10 @@ $( document ).ready(function() {
     })
     .fail(function(err) {
     });
+  });
+  $( "#disconnect" ).click(function( event ) {
+    event.preventDefault();
+    window.localStorage.clear();
+    window.location.reload();
   });
 });

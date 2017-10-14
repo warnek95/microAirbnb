@@ -32,12 +32,19 @@
               "<span> <b>&nbsp&nbsp&nbsp&nbspDescription </b></span>" +
               "</br>"
             $("#offers").append(html)
+            console.log(data.user);
             for (trip of data.trips) {
+              var resButton
+              if (data.user != null && data.user != false && !trip.reserved) {
+                resButton = "&nbsp&nbsp&nbsp&nbsp<button class='reservation_button' attr-id='" + trip.id + "'>Réserver</button>"
+              } else if (data.user == null || data.user == false) {
+                resButton = ""
+              } else {
+                resButton = "&nbsp&nbsp&nbsp&nbsp<button disabled>Déjà réservé</button>"
+              }
               var html = "<span>" + trip.name + "</span>" +
                 "<span>&nbsp&nbsp&nbsp&nbsp"+ trip.description + "</span>" +
-                (data.user != null && !trip.reserved ?
-                  "&nbsp&nbsp&nbsp&nbsp<button class='reservation_button' attr-id='" + trip.id + "'>Réserver</button>" :
-                  "&nbsp&nbsp&nbsp&nbsp<button disabled>Déjà réservé</button>") +
+                resButton +
                 "</br>"
               $("#offers").append(html)
             }
